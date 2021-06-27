@@ -1,53 +1,55 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { useState } from 'react';
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import useCart from '../hooks/useCart';
+
+import products from '../products.json';
 
 export default function Home() {
+  const { subtotal, totalItems, addToCart, checkout } = useCart();
+
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>Space Jelly Shop</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <h1 className={styles.title}>Space Jelly Shop</h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
+          The best space Jellyfish swag on the web
         </p>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+        <p className={styles.description}>
+          <strong>Items:</strong> {totalItems}
+          <br />
+          <strong>Total Cost:</strong> {subtotal}
+          <br />
+          <button className={styles.button} onClick={checkout}>
+            Check Out
+          </button>
+        </p>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+        <ul className={styles.grid}>
+          {products.map(({ id, title, description, image, price }) => (
+            <li className={styles.card} key={id}>
+              <img src={image} alt={title} />
+              <h3>{title}</h3>
+              <p>£{price}.00</p>
+              <p>{description}</p>
+              <p>
+                <button
+                  className={styles.button}
+                  onClick={() => addToCart({ id })}
+                >
+                  Add to Cart
+                </button>
+              </p>
+            </li>
+          ))}
+        </ul>
       </main>
 
       <footer className={styles.footer}>
@@ -61,5 +63,5 @@ export default function Home() {
         </a>
       </footer>
     </div>
-  )
+  );
 }
