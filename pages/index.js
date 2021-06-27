@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import styles from '../styles/Home.module.css';
 import { useCart } from '../hooks/useCart';
 
@@ -24,10 +25,14 @@ export default function Home() {
         <ul className={styles.grid}>
           {products.map(({ id, title, description, image, price }) => (
             <li className={styles.card} key={id}>
-              <img src={image} alt={title} />
-              <h3>{title}</h3>
-              <p>£{price}.00</p>
-              <p>{description}</p>
+              <Link href={`/products/${id}`}>
+                <a>
+                  <img src={image} alt={title} />
+                  <h3>{title}</h3>
+                  <p>£{price}.00</p>
+                  <p>{description}</p>
+                </a>
+              </Link>
               <p>
                 <button
                   className={styles.button}
